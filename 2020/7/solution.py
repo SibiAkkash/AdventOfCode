@@ -70,7 +70,7 @@ def make_graph(rules: List[str]) -> Graph:
 def bags_that_can_contain(graph: Graph, bag_type: str) -> int:
 	visited = set()
 	# get bags that directly can contain the shiny gold bag
-	vertices_list = graph.get_incoming_vertices('shiny gold')
+	vertices_list = graph.get_incoming_vertices(bag_type)
 	# make it a deque for faster pops from front
 	current_bags = deque(bag for bag in vertices_list)
 	# get all bags that can eventually contain the gold bag
@@ -86,12 +86,14 @@ def bags_that_can_contain(graph: Graph, bag_type: str) -> int:
 	return len(visited)
 
 def number_of_bags_inside(graph: Graph, bag_type: str) -> int:
+
+	# no more bags can be added 
 	if bag_type is None:
 		return 0
 	adj_vertices = graph.get_adjacent_vertices(bag_type)
-	# print(adj_vertices)
 	if len(adj_vertices) == 0:
 		return number_of_bags_inside(graph, None)
+	# recursively find number of bags inside a given bag_type 
 	total = 0
 	for inner_bag in adj_vertices:
 		inner_bag_type, count = inner_bag
@@ -106,7 +108,9 @@ if __name__ == "__main__":
 	graph = make_graph(input)
 	# print(f'bag types: {graph.get_vertices()}')
 	# graph.show_adjacency_matrix()
-	# count = bags_that_can_contain(graph, 'shiny gold')
-	# print(count)
+	
+	# Part 1
+	# print(bags_that_can_contain(graph, 'shiny gold'))
+	# Part 2
 	print(number_of_bags_inside(graph, 'shiny gold'))
 	
